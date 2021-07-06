@@ -5,3 +5,4 @@
 
 Посмотрим как работает даное приложение: 
 
+![блокнот](https://user-images.githubusercontent.com/44715875/124636724-8a7cf000-de91-11eb-981b-043e8184e60d.png)
