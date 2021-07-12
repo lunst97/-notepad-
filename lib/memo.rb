@@ -1,29 +1,33 @@
 class Memo < Post
   def read_from_console
-    puts "Я сохраню всё, что ты напишешь до строчки \"end\" в файл."
+    puts 'Что нужно запомнить? Введите "end" чтобы закончить.'
+    input = nil
 
-    line = nil
-
-    while line != "end" do
-      line = STDIN.gets.chomp
-      @text << line
+    until input == 'end'
+      input = STDIN.gets.chomp
+      @text << input
     end
 
-    @text.pop
+    @text[0..-2]
   end
 
-  def save
-    file = File.new(file_path, "w:UTF-8")
+  def to_strings
+    time_string = "Создано: #{@created_at.strftime('%Y.%m.%d, %H:%M:%S')}"
 
-    time_string = @created_at.strftime("%Y.%m.%d, %H:%M")
-    file.puts(time_string + "\n\r")
+    @text.unshift(time_string)
+  end
 
-    for item in @text do
-      file.puts(item)
-    end
+  def to_db_hash
+    super.merge(
+      {
+        'text' => @text.join('\n\r')
+      }
+    )
+  end
 
-    file.close
+  def load_data(data_hash)
+    super(data_hash)
 
-    puts "Ваша запись сохранена"
+    @text = data_hash['text'].split('\n\r')
   end
 end

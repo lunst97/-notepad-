@@ -1,28 +1,35 @@
 class Link < Post
   def initialize
     super
-
     @url = ''
   end
 
   def read_from_console
-    puts "Введите адрес ссылки"
-    @url = STDIN.gets.chomp
+    puts 'Введите текст ссылки:'
+    @url = gets.chomp
 
-    puts "Напишите пару слов о том, куда ведёт ссылка"
-    @text = STDIN.gets.chomp
+    puts 'Введите адрес ссылки:'
+    @text = gets.chomp
   end
 
-  def save
-    file = File.new(file_path, "w:UTF-8")
-    time_string = @created_at.strftime("%Y.%m.%d, %H:%M")
-    file.puts(time_string + "\n\r")
+  def to_strings
+    time_string = "Создано: #{@created_at.strftime('%Y.%m.%d, %H:%M:%S')}\n"
 
-    file.puts(@url)
-    file.puts(@text)
+    [@url, @text, time_string]
+  end
 
-    file.close
+  def to_db_hash
+    super.merge(
+      {
+        'url' => @url,
+        'text' => @text
+      }
+    )
+  end
 
-    puts "Ваша ссылка сохранена"
+  def load_data(data_hash)
+    super(data_hash)
+
+    @url = data_hash['url']
   end
 end
