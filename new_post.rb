@@ -3,7 +3,6 @@ require_relative 'lib/task'
 require_relative 'lib/link'
 require_relative 'lib/memo'
 
-
 post_types = Post.post_types.keys
 
 input = -1
